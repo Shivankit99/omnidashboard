@@ -1,0 +1,69 @@
+{% extends "omnidash/base.html" %}
+{% block content %}
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+            <h2 class="text-center">Leaves</h2>
+            <div class="p-3 m-3 d-flex align-items-center justify-content-center">
+            <form method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                From :
+                <input title="Start Date is included" type="date"  name="lfrom" >
+                <br>
+                <br>
+                To : 
+                <input title="End date is excluded" type="date"  name="lto" >
+                <div class="text-center">
+                    <br>
+                    <button type="Submit" class="btn btn-outline-light ">Submit</button>
+                    </div>
+                </form>
+            </div>  
+            </div>        
+        </div>
+          <div class="col">
+            <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+            <h2 class="text-center">Attendance</h2>
+            <div class="p-3 m-3 d-flex align-items-center justify-content-center">
+            <form method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                From : 
+                <input title="Start Date is included" type="date"  name="afrom" >
+                <br>
+                <br>
+                To : 
+                <input title="End date is excluded" type="date"  name="ato" >
+                <div class="text-center">
+                <br>
+                <button type="Submit" class="btn btn-outline-light ">Submit</button>
+                </div>
+            </form>
+        </div>   
+            </div>           
+    </div>
+          <div class="col">
+            <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+            <h2 class="text-center">Reimbursement</h2>
+        <div class="p-3 m-3 d-flex align-items-center justify-content-center">
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            From : 
+            <input title="Start Date is included" type="date"  name="rfrom" >
+            <br>
+            <br>
+            To : 
+            <input title="End date is excluded" type="date"  name="rto" >
+            <div class="text-center">
+                <br>
+                <button type="Submit" class="btn btn-outline-light ">Submit</button>
+                </div>
+            </form>
+        </div>   
+            </div>    
+          </div>
+        </div>
+      </div> 
+</body>
+{% endblock content %}

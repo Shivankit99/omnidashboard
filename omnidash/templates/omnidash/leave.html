@@ -1,0 +1,108 @@
+{% extends "omnidash/base.html" %}
+{% block content %}
+<body>
+    <br>
+    {% if messages %}
+        {% for messages in messages %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{messages}}
+            </div>
+        {% endfor %}    
+    {% endif %}
+    {% if role != 'manager' %}
+    <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+        <h2 class="text-center">Leave Request</h2>
+        <hr class="m-1"/>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table class="table" >
+                <thead>
+                    <tr>
+                        <th scope="col" style="color:white;">From</th>
+                        <th scope="col" style="color:white;">To</th>
+                        <th scope="col" style="color:white;">Reason</th>
+                        <th scope="col" style="color:white;">Submit</th>
+                    </tr>
+                </thead>  
+            <tbody>      
+                <tr>
+                    <td><input title="Start Date is included" type="date"  name="minad" ></td>
+                    <td><input title="End date is excluded" type="date"  name="maxad" ></td>
+                    <td><input type="text" name="body"></td>
+                    <td><button type="Submit" class="btn btn-outline-light">Submit</button></td>
+                </tr>
+            </tbody>
+        </table>  
+        </form>
+        {% endif %}
+    </div>    
+    {% if role != 'Employee' %}
+    <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+    <h2 class="text-center">Leave Review</h2>
+    <hr class="m-1"/>
+        {% if lea|length != 0 %}
+        <form method=POST action="">
+            {% csrf_token %}
+            <table class="table" id="sortTable">
+                <thead>
+                  <tr>
+                      <th scope="col" style="color:white;">Name</th>
+                      <th scope="col" style="color:white;">From</th>
+                      <th scope="col" style="color:white;">To</th>
+                      <th scope="col" style="color:white;">Reason</th>
+                      <th scope="col" style="color:white;">Approve</th>
+                      <th scope="col" style="color:white;">Reject</th>
+                    </tr>
+                </thead>
+                <tbody  style="color:whitesmoke;">
+                    {% for l in lea %}
+                        {% if l.reportingmanager == tempn %}
+                            {% for e in em %}
+                                {% if e.id == l.username_id %}
+                                <tr>
+                                <td>{{e.name}}</td>
+                                {% endif %}
+                            {% endfor %}  
+                            <td>{{l.dfrom}}</td>   
+                            <td>{{l.dto}}</td> 
+                            <td>{{l.reason}}</td> 
+                            <td>      
+                                {% if l.approve == 0 and l.reject == 0 %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value={{l.id}} name="abox">
+                                </div>
+                                {% elif l.approve == 1  %}  
+                                    Approved
+                                {% elif l.approve == 0  %}
+                           
+                                {% endif %} 
+                            </td>
+                            <td>     
+                                {% if l.approve == 0 and l.reject == 0 %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"  value={{l.id}} name="rbox">
+                                </div>
+                                {% elif l.reject == 1  %}  
+                                    Rejected
+                                {% elif l.reject == 0  %}
+                                    
+                                {% endif %}
+                            </td>
+                        {% endif %} 
+                    </tr>   
+                    {% endfor %}
+                </tbody>
+            </table> 
+            <script>
+                $('#sortTable').DataTable();
+            </script>
+            <br>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-outline-light" >Submit</button>
+            </div>
+        </form>
+        {% endif %}
+    </div> 
+    {% endif %}  
+</body>
+{% endblock content %}

@@ -1,0 +1,66 @@
+{% extends "omnidash/base.html" %}
+{% block content %}
+<body>
+    <div class="container-fluid border rounded-lg shadow p-3 col-lg-4 mt-5 bg-dark text-white">
+    Name: {{temp.name}}
+    <br><br>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label >Status: </label>
+        <select id="status" name="status">
+            <option value="Offline">Offline</option>
+            <option value="Work-From-Home">Work-From-Home</option>
+            <option value="Online">Online</option>
+        </select>
+        <button type="Submit" class="btn btn-outline-light" style="float: right;">Update</button>
+    </form>    
+    </div>
+    <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+        <h2 class="text-center">Employee Overview</h2>
+        <hr class="m-1"/>
+        <div style="overflow-x: auto;">
+            <div class="table-responsive">
+                <table class="table" id="sortTable">
+                    <thead>
+                        <th scope="col" style="color:white;">
+                            Name
+                        </th>
+                        <th scope="col" style="color:white;">
+                            Status
+                        </th>
+                        <th scope="col" style="color:white;">
+                            Leave
+                        </th>
+                    </thead>
+                    <tbody style="color:white;">
+                        {% if le|length != 0 %}
+                        {% for e in em %}
+                        <tr>
+                            <td>
+                                {{e.name}}
+                            </td>
+                            <td >    
+                                {{e.status}}
+                            </td>    
+                            <td>
+                                {% for l in le %}
+                                    {% if e.id == l.username_id%}
+                                    {% if today >= l.dfrom and today <= l.dto %}
+                                        {{l.reason}}
+                                        {% endif %}    
+                                    {% endif %}
+                                {% endfor %}  
+                            </td>
+                        </tr>
+                        {% endfor %}        
+                        {% endif %}
+                    </tbody>
+                </table> 
+                <script>
+                    $('#sortTable').DataTable();
+                </script>            
+            </div>
+        </div>
+    </div>     
+</body>
+{% endblock content %}

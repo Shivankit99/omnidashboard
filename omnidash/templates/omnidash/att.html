@@ -1,0 +1,45 @@
+{% extends "omnidash/base.html" %}
+{% block content %}
+<head>
+    <title>Omnipresent Dashboard</title>
+</head>
+<body>
+    <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+        <h2 class="text-center">Employee Overview</h2>
+        <hr class="m-1"/>
+        <div style="overflow-x: auto;">
+            <div class="table-responsive">
+                <table class="table" id="sortTable">
+                    <thead>
+                        <th scope="col" style="color:white;">Name</th>
+                        <th scope="col" style="color:white;">Date</th>
+                        <th scope="col" style="color:white;">First Half</th>
+                        <th scope="col" style="color:white;">Second Half</th>
+                    </thead>
+                    <tbody style="color:white;">    
+                        {% for a in at %}
+                        <tr>
+                            {% if a.reportingmanager == tempn %}
+                                <td>
+                                    {% for e in em %}
+                                        {% if e.id == a.username_id %}
+                                            {{e.name}}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>{{a.dadded}}</td>
+                                <td>{{a.d1}}</td>
+                                <td>{a.d2}}</td>
+                            {% endif %}
+                        </tr>      
+                        {% endfor %}
+                    </tbody>            
+                </table>
+                <script>
+                    $('#sortTable').DataTable();
+                </script>  
+            </div>
+        </div>
+    </div>       
+</body>
+{% endblock content %}

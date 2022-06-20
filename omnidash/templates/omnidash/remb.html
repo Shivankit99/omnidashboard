@@ -1,0 +1,280 @@
+{% extends "omnidash/base.html" %}
+{% block content %}
+<body>
+    {% if messages %}
+        {% for messages in messages %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{messages}}
+            </div>
+        {% endfor %}    
+    {% endif %}
+
+    {% if role != 'manager' %}
+    <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+        <h2 class="text-center">Past Requests</h2>
+        <hr class="m-1"/>
+      <div style="overflow-x: auto;">
+          <div class="table-responsive"> 
+            <table class="table" id="sortTable2">
+                <thead>
+                    <tr>
+                        <th scope="col" style="color:white;">Date</th>
+                        <th scope="col" style="color:white;">Location</th>
+                        <th scope="col" style="color:white;">Description</th>
+                        <th scope="col" style="color:white;">Catogery</th>
+                        <th scope="col" style="color:white;">Project</th>
+                        <th scope="col" style="color:white;">Amount</th>
+                        <th scope="col" style="color:white;">Advance</th>
+                        <th scope="col" style="color:white;">Mode-of-Payment</th>
+                        <th scope="col" style="color:white;">Approval Status</th>
+                        <th scope="col" style="color:white;">Payment Status</th>
+                    </tr>
+                </thead>  
+            <tbody style="color:white;">             
+                {% for r in re %}
+                    {% if r.username_id == tempid %}
+                    <tr> 
+                        <td>
+                        {{r.dadded}}
+                        </td>
+                        <td>
+                        {{r.loc}}
+                        </td>
+                        <td>
+                        {{r.dis}}
+                        </td>
+                        <td>
+                        {{r.cat}}
+                        </td>
+                        <td>
+                        {{r.pname}}
+                        </td>
+                        <td>
+                        {{r.value}}
+                        </td>
+                        <td>
+                        {{r.adv}}
+                        </td>
+                        <td>
+                        {{r.mof}}
+                        </td>
+                        <td>
+                            {% if r.approve == 0 and r.reject == 0 %}
+                                Pending
+                            {% elif r.approve == 1 %}
+                                Approved
+                            {% elif r.reject == 1 %}
+                                Rejected
+                            {% endif %}    
+                        </td>
+                        <td>
+                            {% if r.pay == 0 %}
+                                Pending
+                            {% else %}
+                                Paid
+                            {% endif %}        
+                        </td>
+                    </tr>
+                    {% endif %}    
+                {% endfor %}   
+            </tbody>
+            </table>   
+            <script>
+                $('#sortTable2').DataTable();
+            </script>
+          </div>
+      </div>
+    </div>  
+    {% endif %}
+
+
+    {% if role != 'manager' %}
+    <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white" style="overflow-x: auto;">
+        <h2 class="text-center">Reimbursement Request</h2>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="overflow-x: auto;">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="color:white;">Date</th>
+                                <th scope="col" style="color:white;">Location</th>
+                                <th scope="col" style="color:white;">Discription</th>
+                                <th scope="col" style="color:white;">Catogery</th>
+                                <th scope="col" style="color:white;">Project</th>
+                                <th scope="col" style="color:white;">Amount</th>
+                                <th scope="col" style="color:white;">Advantage</th>
+                                <th scope="col" style="color:white;">Mode-of-Payment</th>
+                                <th scope="col" style="color:white;">File</th>
+                                <th scope="col" style="color:white;">Submit</th>
+                            </tr>
+                        </thead>  
+                        <tbody>      
+                            <tr>
+                                <td><input title="Start Date is included" type="date"  name="minad" ></td>
+                                <td><input type="text" name="loc" value="Location"></td>
+                                <td><input type="text" name="dis" value="Discription"></td>
+                                <td><select id="status" name="cato">
+                                    <option value="Cat1">Cat1 </option>
+                                    <option value="Cat1">Cat1</option>
+                                    <option value="Cat1">Cat1 </option>
+                                    <option value="Cat1">Cat1</option>
+                                </select></td>
+                                <td><input type="text" name="Proj" value="Project Name"></td>
+                                <td><input type="number" name="val" value="123"></td>
+                                <td><input type="number" name="adv" value="321"></td>
+                                <td><select id="status" name="mof">
+                                    <option value="Online">Online </option>
+                                    <option value="Cash">Cash</option>
+                                </select></td>
+                                <td><input type="file" name="file"></td>
+                                <td><button type="Submit" class="btn btn-outline-light">Submit</button></td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </div>
+            </div>        
+        </form>
+    </div>
+    {% endif %}
+
+    {% if role != 'Employee' %}
+    <div class="border rounded-lg shadow p-3 m-3 bg-dark text-white">
+        <h2 class="text-center">Reimbursement Review</h2>
+        <hr class="m-1"/>
+      <div style="overflow-x: auto;">
+          <div class="table-responsive">
+            {% if re|length != 0 %}
+            <form method=POST action="">
+                {% csrf_token %} 
+                <table class="table" id="sortTable">   
+                    <thead>
+                        <tr>
+                            <th scope="col" style="color:white;">Name</th>
+                            <th scope="col" style="color:white;">Date</th>
+                            <th scope="col" style="color:white;">Location</th>
+                            <th scope="col" style="color:white;">Discription</th>
+                            <th scope="col" style="color:white;">Catogery</th>
+                            <th scope="col" style="color:white;">Project</th>
+                            <th scope="col" style="color:white;">Amount</th>
+                            <th scope="col" style="color:white;">Advantage</th>
+                            <th scope="col" style="color:white;">Mode-of-Payment</th>
+                            <th scope="col" style="color:white;">Approve</th>
+                            <th scope="col" style="color:white;">Reject</th>
+                            {% if role == 'Accounts' %}
+                            <th scope="col" style="color:white;">Payment-Status</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody  style="color:whitesmoke;">
+                        {% for r in re %}
+                                {% if r.reportingmanager == tempn %}
+                                    <tr>
+                                        {% for e in em %}
+                                            {% if e.id == r.username_id %}
+                                            <td>
+                                                {{e.name}}
+                                            </td>
+                                            {% endif %}
+                                        {% endfor %} 
+                                        <td>{{r.dadded}}</td>
+                                        <td>{{r.loc}}</td>
+                                        <td>{{r.dis}}</td>
+                                        <td>{{r.cat}}</td>
+                                        <td> {{r.pname}}</td>
+                                        <td>{{r.value}}</td>
+                                        <td>{{r.adv}}</td>
+                                        <td>{{r.mof}}</td>
+                                        <td>      
+                                            {% if r.approve == 0 and r.reject == 0 %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value={{r.id}} name="abox">
+                                            </div>
+                                            {% elif r.approve == 1  %}  
+                                                Approved
+                                            {% elif r.approve == 0  %}
+                                                -    
+                                            {% endif %} 
+                                        </td>
+                                        <td>     
+                                            {% if r.approve == 0 and r.reject == 0 %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"  value={{r.id}} name="rbox">
+                                            </div>
+                                            {% elif r.reject == 1  %}  
+                                                Rejected
+                                            {% elif r.reject == 0  %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        {% else %} 
+                                    </tr>   
+                            {% endif %} 
+
+                            {% if role == 'Accounts' %}
+                            <tr>
+                                {% for e in em %}
+                                    {% if e.id == r.username_id %}
+                                    <td>
+                                        {{e.name}}
+                                    </td>
+                                    {% endif %}
+                                {% endfor %} 
+                                <td>{{r.dadded}}</td>
+                                <td>{{r.loc}}</td>
+                                <td>{{r.dis}}</td>
+                                <td>{{r.cat}}</td>
+                                <td> {{r.pname}}</td>
+                                <td>{{r.value}}</td>
+                                <td>{{r.adv}}</td>
+                                <td>{{r.mof}}</td>
+                                <td>      
+                                    {% if r.approve == 0 and r.reject == 0 %}
+                                        Pending
+                                    {% elif r.approve == 1  %}  
+                                        Approved
+                                    {% elif r.approve == 0  %}
+                                        -    
+                                    {% endif %} 
+                                </td>
+                                <td>     
+                                    {% if r.approve == 0 and r.reject == 0 %}
+                                        Pending
+                                    {% elif r.reject == 1  %}  
+                                        Rejected
+                                    {% elif r.reject == 0  %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if r.pay == 0 %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"  value={{r.id}} name="pay">
+                                    </div>
+                                    {% else %}
+                                        Paid
+                                    {% endif %}
+                                </td>
+                                {% else %}
+                            </tr>
+                            {% endif %}
+
+                        {% endfor %}
+                    </tbody> 
+                </table>  
+                <script>
+                    $('#sortTable').DataTable();
+                </script>
+                <br>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-outline-light" >Submit</button>
+                </div>
+            </form>  
+            {% endif %}      
+    </div>    
+    {% endif %}
+      </div>
+    </div>
+</body>
+{% endblock content %}
